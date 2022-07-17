@@ -1,1 +1,1 @@
-# annature-node
+# Annature NodeJS Client
