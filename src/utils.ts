@@ -47,7 +47,11 @@ export const datifyIsoStrings = (o?: { [key: string]: any }) => {
     newObj = { ...o };
 
     for (const key of Object.keys(o)) {
-      if (['created', 'verified', 'sent', 'voided', 'declined', 'completed', 'viewed', 'failed'].includes(key)) {
+      if (
+        ['created', 'verified', 'sent', 'voided', 'declined', 'completed', 'viewed', 'failed', 'expiration'].includes(
+          key,
+        )
+      ) {
         newObj[key] = new Date(o[key]);
       }
     }
