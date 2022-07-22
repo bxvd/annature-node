@@ -131,7 +131,7 @@ export type EnvelopeCreateParams = {
      */
     name?: string;
     /** The Buffer or the base64 encoded string of the PDF file. */
-    base: string;
+    base: Buffer | string;
   }[];
   /**
    * The collection of recipients that make up the envelope. There must be at least one recipient with a type of `signer`.
@@ -190,7 +190,20 @@ export default (client: AxiosInstance) => ({
    * `https://dashboard.annature.com.au/create-envelope?envelopeId={{envelope_id}}`.
    */
   create: (params: EnvelopeCreateParams) =>
-    handleDataResponse<Envelope>(client.post('envelopes', snakeCase(isoStringifyDates(params)))),
+    handleDataResponse<Envelope>(
+      client.post(
+        'envelopes',
+        snakeCase(
+          isoStringifyDates({
+            ...params,
+            documents: params.documents.map(v => ({
+              ...v,
+              base: Buffer.isBuffer(v.base) ? v.base.toString('base64') : v.base,
+            })),
+          }),
+        ),
+      ),
+    ),
   /**
    * Sends an existing draft envelope to all eligible recipients.
    *
