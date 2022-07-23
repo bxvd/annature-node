@@ -7,6 +7,7 @@ import fields from './fields';
 import groups from './groups';
 import organisations from './organisations';
 import recipients from './recipients';
+import templates from './templates';
 
 export type Credentials = {
   id: string;
@@ -14,8 +15,6 @@ export type Credentials = {
 };
 
 export class Annature {
-  private readonly _id: string;
-  private readonly _key: string;
   private readonly client: AxiosInstance;
   readonly accounts: ReturnType<typeof accounts>;
   readonly documents: ReturnType<typeof documents>;
@@ -25,11 +24,9 @@ export class Annature {
   readonly groups: ReturnType<typeof groups>;
   readonly recipients: ReturnType<typeof recipients>;
   readonly organisations: ReturnType<typeof organisations>;
+  readonly templates: ReturnType<typeof templates>;
 
   constructor(credentials: Credentials) {
-    this._id = credentials.id;
-    this._key = credentials.key;
-
     this.client = axios.create({
       baseURL: 'https://api.annature.com.au/v1/',
       headers: {
@@ -48,5 +45,6 @@ export class Annature {
     this.groups = groups(this.client);
     this.recipients = recipients(this.client);
     this.organisations = organisations(this.client);
+    this.templates = templates(this.client);
   }
 }
